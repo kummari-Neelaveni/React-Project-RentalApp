@@ -1,0 +1,93 @@
+/* Container */
+.add-material-container {
+  max-width: 480px;
+  margin: 1.5rem auto;
+  text-align: center;
+}
+
+/* Add Button */
+.add-material-btn {
+  width: 180px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+/* Modal */
+.add-material-modal .modal-content {
+  border-radius: 12px;
+  background-color: #ffffff;
+}
+
+/* Modal Header */
+.add-material-modal-header {
+  border-bottom: 1px solid #ddd;
+}
+
+.add-material-modal-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #0d6efd;
+}
+
+/* Form Styling */
+.add-material-form {
+  text-align: left;
+  padding: 1rem 0.5rem;
+}
+
+.add-material-group {
+  margin-bottom: 1rem;
+}
+
+/* ✔️ Strong, visible labels */
+.add-material-label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #000 !important;  /* Force solid black */
+  margin-bottom: 0.4rem;
+  display: block;
+  opacity: 1 !important;   /* Make sure it is fully visible */
+}
+
+
+/* Inputs & Selects */
+.add-material-input,
+.add-material-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  color: #212529;          /* Input text color */
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Placeholder text styling */
+.add-material-input::placeholder {
+  color: #6c757d;
+}
+
+/* Focus styles */
+.add-material-input:focus,
+.add-material-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 5px rgba(13, 110, 253, 0.3);
+  outline: none;
+}
+
+/* Modal Footer */
+.add-material-modal-footer {
+  border-top: 1px solid #ddd;
+  padding-top: 0.75rem;
+}
+
+.btn-cancel,
+.btn-add-material {
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+}
+
+
+
+
