@@ -1,11 +1,16 @@
-import React from 'react'
+import React from 'react';
+
 
 const CustomerDashboard = () => {
   return (
-    <div>
-      customer
-    </div>
-  )
-}
+   <div>
+    Admins
+   </div>
+  );
+};
 
-export default CustomerDashboard
+export default CustomerDashboard;
+
+
+
+

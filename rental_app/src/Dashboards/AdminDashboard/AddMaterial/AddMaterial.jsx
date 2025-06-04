@@ -49,6 +49,7 @@ const AddMaterial = () => {
       alert("Material added successfully!");
       setOpenModal(false);
       setAddMaterial({
+  BusinessName:"",  
   name: "",
   description: "",
   quantity: "",
@@ -80,13 +81,25 @@ const AddMaterial = () => {
 
         <Modal.Body className="add-material-modal-body">
           <Form className="add-material-form">
+
+           <Form.Group className="form-group mb-3 add-material-group">
+              <Form.Label className="form-label add-material-label"><strong>Business Name</strong></Form.Label>
+              <Form.Control
+                className="form-control add-material-input"
+                type="text"
+                placeholder="e.g.abc santring"
+                
+                onChange={(e) => setAddMaterial({ ...addMaterial, BusinessName: e.target.value })}
+              />
+            </Form.Group>
+
             <Form.Group className="form-group mb-3 add-material-group">
               <Form.Label className="form-label add-material-label"><strong>Material Name</strong></Form.Label>
               <Form.Control
                 className="form-control add-material-input"
                 type="text"
                 placeholder="e.g., Steel Plate"
-                value={addMaterial.name}
+               
                 onChange={(e) => setAddMaterial({ ...addMaterial, name: e.target.value })}
               />
             </Form.Group>
@@ -97,7 +110,6 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="text"
                 placeholder="Short description"
-                value={addMaterial.description}
                 onChange={(e) => setAddMaterial({ ...addMaterial, description: e.target.value })}
               />
             </Form.Group>
@@ -107,8 +119,7 @@ const AddMaterial = () => {
               <Form.Control
                 className="form-control add-material-input"
                 type="text"
-                placeholder="e.g., 100 units"
-                value={addMaterial.quantity}
+                placeholder="e.g., 100 sets"
                 onChange={(e) => setAddMaterial({ ...addMaterial, quantity: e.target.value })}
               />
             </Form.Group>
@@ -119,7 +130,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="text"
                 placeholder="e.g., 6ft x 4ft"
-                value={addMaterial.size}
+             
                 onChange={(e) => setAddMaterial({ ...addMaterial, size: e.target.value })}
               />
             </Form.Group>
@@ -130,7 +141,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="number"
                 placeholder="e.g., 1500"
-                value={addMaterial.price}
+            
                 onChange={(e) => setAddMaterial({ ...addMaterial, price: e.target.value })}
               />
             </Form.Group>
@@ -141,7 +152,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="url"
                 placeholder="Paste a direct image URL"
-                value={addMaterial.imageurl}
+               
                 onChange={(e) => setAddMaterial({ ...addMaterial, imageurl: e.target.value })}
               />
             </Form.Group>
@@ -150,7 +161,7 @@ const AddMaterial = () => {
               <Form.Label className="form-label add-material-label"><strong>Category</strong></Form.Label>
               <Form.Select
                 className="form-select add-material-select"
-                value={addMaterial.category}
+              
                 onChange={(e) => setAddMaterial({ ...addMaterial, category: e.target.value })}
               >
                 <option value="">Select category</option>

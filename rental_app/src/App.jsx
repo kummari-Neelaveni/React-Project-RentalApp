@@ -10,6 +10,7 @@ import AddMaterial from './Dashboards/AdminDashboard/AddMaterial/AddMaterial'
 import ViewMaterial from './Dashboards/AdminDashboard/ViewMaterial/ViewMaterial'
 import ViewBookings from './Dashboards/AdminDashboard/ViewBookings/ViewBookings'
 import Lowstock from './Dashboards/AdminDashboard/Lowstock/Lowstock'
+import CustomerDashboard from './Dashboards/CustomerDashboard/CustomerDashboard'
 
 const App = () => {
   return (
@@ -26,6 +27,14 @@ const App = () => {
           <Route path="view-bookings" element={<ViewBookings />} />
           <Route path="low-stock-alert" element={<Lowstock />} />
         </Route>
+
+    
+          <Route path="/CustomersDashboard" element={<CustomerDashboard/>}>
+          
+          </Route>
+          
+          
+        
       </Routes>
     </div>
   )
