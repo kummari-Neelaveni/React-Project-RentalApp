@@ -11,6 +11,7 @@ import ViewMaterial from './Dashboards/AdminDashboard/ViewMaterial/ViewMaterial'
 import ViewBookings from './Dashboards/AdminDashboard/ViewBookings/ViewBookings'
 import Lowstock from './Dashboards/AdminDashboard/Lowstock/Lowstock'
 import CustomerDashboard from './Dashboards/CustomerDashboard/CustomerDashboard'
+import Adminselection from './Dashboards/CustomerDashboard/AdminSelection/Adminselection'
 
 const App = () => {
   return (
@@ -29,9 +30,11 @@ const App = () => {
         </Route>
 
     
-          <Route path="/CustomersDashboard" element={<CustomerDashboard/>}>
-          
-          </Route>
+         <Route path="/customerdashboard" element={<CustomerDashboard />}>
+        {/* default child route */}
+        <Route path="adminselection" element={<Adminselection />} />
+      </Route>
+    
           
           
         

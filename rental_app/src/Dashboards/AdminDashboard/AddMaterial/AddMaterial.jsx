@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { db } from "../../../ConfigFirebase/config";
-import './AddMaterial.css';  // Import your CSS here
+import './AddMaterial.css';
 
 const AddMaterial = () => {
+  // Get logged in admin info from localStorage
   const loggedinUserFirebase = JSON.parse(localStorage.getItem("loggedInAdmin"));
 
   const [addMaterial, setAddMaterial] = useState({
+    BusinessName: "",
     name: "",
     description: "",
     quantity: "",
@@ -19,12 +21,13 @@ const AddMaterial = () => {
 
   const categories = [
     "Plate",
-    "Box",
+    "Round Boxes",
     "Jack",
     "H-Frame",
-    "Wooden Plank",
+    "vibrator",
     "Scaffolding Pipe",
-    "Binding Wire"
+    "drilling Machine",
+    "engine millar"
   ];
 
   const [openModal, setOpenModal] = useState(false);
@@ -33,34 +36,42 @@ const AddMaterial = () => {
   const handleClose = () => setOpenModal(false);
 
   const handleMaterial = async (e) => {
-    e.preventDefault()
-    const { name, description, quantity, size, price, imageurl, category } = addMaterial;
+    e.preventDefault();
 
-    if (!name || !description || !quantity || !size || !price || !imageurl || !category) {
+    const { BusinessName, name, description, quantity, size, price, imageurl, category } = addMaterial;
+
+    // Validate all fields are filled
+    if (!BusinessName || !name || !description || !quantity || !size || !price || !imageurl || !category) {
       alert("Please fill all fields");
       return;
     }
 
     try {
+      // Reference to the Admin document using displayName from logged in admin info
       const adminDocRef = doc(db, "Admins", loggedinUserFirebase.user.displayName);
+
+      // Add material to the array 'materials' in the document
       await updateDoc(adminDocRef, {
         materials: arrayUnion(addMaterial)
       });
+
       alert("Material added successfully!");
-      setOpenModal(false);
+
+      // Reset form and close modal
       setAddMaterial({
-  BusinessName:"",  
-  name: "",
-  description: "",
-  quantity: "",
-  size: "",
-  price: "",
-  imageurl: "",
-  category: ""
-});
+        BusinessName: "",
+        name: "",
+        description: "",
+        quantity: "",
+        size: "",
+        price: "",
+        imageurl: "",
+        category: ""
+      });
+      setOpenModal(false);
     } catch (error) {
-      console.log("Error adding material:", error);
-      alert("Failed to add material");
+      console.error("Error adding material:", error);
+      alert("Failed to add material. Please try again.");
     }
   };
 
@@ -80,15 +91,15 @@ const AddMaterial = () => {
         </Modal.Header>
 
         <Modal.Body className="add-material-modal-body">
-          <Form className="add-material-form">
+          <Form className="add-material-form" onSubmit={handleMaterial}>
 
-           <Form.Group className="form-group mb-3 add-material-group">
+            <Form.Group className="form-group mb-3 add-material-group">
               <Form.Label className="form-label add-material-label"><strong>Business Name</strong></Form.Label>
               <Form.Control
                 className="form-control add-material-input"
                 type="text"
-                placeholder="e.g.abc santring"
-                
+                placeholder="e.g. abc santring"
+                value={addMaterial.BusinessName}
                 onChange={(e) => setAddMaterial({ ...addMaterial, BusinessName: e.target.value })}
               />
             </Form.Group>
@@ -99,7 +110,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="text"
                 placeholder="e.g., Steel Plate"
-               
+                value={addMaterial.name}
                 onChange={(e) => setAddMaterial({ ...addMaterial, name: e.target.value })}
               />
             </Form.Group>
@@ -110,6 +121,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="text"
                 placeholder="Short description"
+                value={addMaterial.description}
                 onChange={(e) => setAddMaterial({ ...addMaterial, description: e.target.value })}
               />
             </Form.Group>
@@ -120,6 +132,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="text"
                 placeholder="e.g., 100 sets"
+                value={addMaterial.quantity}
                 onChange={(e) => setAddMaterial({ ...addMaterial, quantity: e.target.value })}
               />
             </Form.Group>
@@ -130,7 +143,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="text"
                 placeholder="e.g., 6ft x 4ft"
-             
+                value={addMaterial.size}
                 onChange={(e) => setAddMaterial({ ...addMaterial, size: e.target.value })}
               />
             </Form.Group>
@@ -141,7 +154,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="number"
                 placeholder="e.g., 1500"
-            
+                value={addMaterial.price}
                 onChange={(e) => setAddMaterial({ ...addMaterial, price: e.target.value })}
               />
             </Form.Group>
@@ -152,7 +165,7 @@ const AddMaterial = () => {
                 className="form-control add-material-input"
                 type="url"
                 placeholder="Paste a direct image URL"
-               
+                value={addMaterial.imageurl}
                 onChange={(e) => setAddMaterial({ ...addMaterial, imageurl: e.target.value })}
               />
             </Form.Group>
@@ -161,7 +174,7 @@ const AddMaterial = () => {
               <Form.Label className="form-label add-material-label"><strong>Category</strong></Form.Label>
               <Form.Select
                 className="form-select add-material-select"
-              
+                value={addMaterial.category}
                 onChange={(e) => setAddMaterial({ ...addMaterial, category: e.target.value })}
               >
                 <option value="">Select category</option>
@@ -170,6 +183,7 @@ const AddMaterial = () => {
                 ))}
               </Form.Select>
             </Form.Group>
+
           </Form>
         </Modal.Body>
 
@@ -187,6 +201,11 @@ const AddMaterial = () => {
 };
 
 export default AddMaterial;
+
+
+
+
+
 
 
 

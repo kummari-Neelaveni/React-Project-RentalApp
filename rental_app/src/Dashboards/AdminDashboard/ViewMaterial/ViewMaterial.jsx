@@ -63,6 +63,7 @@ const ViewMaterial = () => {
   return (
     <div>
       <h1>Materials Available</h1>
+     
       <div className="container">
         {viewMaterial.map((material, index) => (
           <div className="card" key={index}>
@@ -74,6 +75,7 @@ const ViewMaterial = () => {
                 <span>Size: {material.size}</span>
                 <span>Price: ${material.price}</span>
                 <span>Category: {material.category}</span>
+                <span>quantity: {material.quantity}</span>
               </div>
             </div>
             <div style={{display:"flex",gap:"2rem", padding:"2rem"}}>
