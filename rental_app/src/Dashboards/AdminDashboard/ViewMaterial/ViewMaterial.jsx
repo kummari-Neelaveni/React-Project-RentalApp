@@ -76,6 +76,7 @@ const ViewMaterial = () => {
                 <span>Price: ${material.price}</span>
                 <span>Category: {material.category}</span>
                 <span>quantity: {material.quantity}</span>
+                <span>location:{material.location}</span>
               </div>
             </div>
             <div style={{display:"flex",gap:"2rem", padding:"2rem"}}>

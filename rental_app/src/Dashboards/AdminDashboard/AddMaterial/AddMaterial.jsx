@@ -14,6 +14,7 @@ const AddMaterial = () => {
     description: "",
     quantity: "",
     size: "",
+    location:"",
     price: "",
     imageurl: "",
     category: ""
@@ -64,6 +65,7 @@ const AddMaterial = () => {
         description: "",
         quantity: "",
         size: "",
+        location:"",
         price: "",
         imageurl: "",
         category: ""
@@ -147,6 +149,17 @@ const AddMaterial = () => {
                 onChange={(e) => setAddMaterial({ ...addMaterial, size: e.target.value })}
               />
             </Form.Group>
+
+            <Form.Group className="form-group mb-3 add-material-group">
+  <Form.Label className="form-label add-material-label"><strong>Location</strong></Form.Label>
+  <Form.Control
+    className="form-control add-material-input"
+    type="text"
+    placeholder="e.g., Hyderabad"
+  
+    onChange={(e) => setAddMaterial({ ...addMaterial, location: e.target.value })}
+  />
+</Form.Group>
 
             <Form.Group className="form-group mb-3 add-material-group">
               <Form.Label className="form-label add-material-label"><strong>Price (₹)</strong></Form.Label>
