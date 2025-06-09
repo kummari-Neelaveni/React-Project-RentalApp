@@ -13,7 +13,7 @@ import Lowstock from './Dashboards/AdminDashboard/Lowstock/Lowstock'
 import CustomerDashboard from './Dashboards/CustomerDashboard/CustomerDashboard'
 import Adminselection from './Dashboards/CustomerDashboard/AdminSelection/Adminselection'
 import ParticularAdmin from './Dashboards/CustomerDashboard/ParticularAdmin/ParticularAdmin'
-import Booking from './Dashboards/CustomerDashboard/Booking/Booking'
+
 
 const App = () => {
   return (
@@ -36,7 +36,7 @@ const App = () => {
         {/* default child route */}
         <Route path="adminselection" element={<Adminselection />} />
 <Route path="adminselection/ParticularAdmin/:adminId" element={<ParticularAdmin />} />
-<Route path="booking" element={<Booking/>}/>
+{/* <Route path="booking" element={<Booking/>}/> */}
       </Route>
     
           
