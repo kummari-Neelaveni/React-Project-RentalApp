@@ -41,7 +41,7 @@ const CustomerDashboard = () => {
           <ul>
             <li><Link to="/dashboard" className="sidebar-link">Overview</Link></li>
             <li><Link to="adminselection" className="sidebar-link">Admin Selection</Link></li>
-            <li><Link to="/bookings" className="sidebar-link">Bookings</Link></li>
+            <li><Link to="customerbookings" className="sidebar-link">Bookings</Link></li>
             <li><Link to="/settings" className="sidebar-link">Settings</Link></li>
           </ul>
         </div>
