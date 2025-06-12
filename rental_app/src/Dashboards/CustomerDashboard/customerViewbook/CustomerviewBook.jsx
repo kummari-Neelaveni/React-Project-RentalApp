@@ -51,14 +51,14 @@ const CustomerviewBook = () => {
     <div style={{ padding: "20px" }}>
       <h2>My Bookings</h2>
       {customerViewbook.length === 0 ? (
-        <p>No bookings found...</p>
-      ) : (
-        customerViewbook.map((booking) => (
-          <div key={booking.id}>
-            <p>{booking.materialName}</p>
-          </div>
-        ))
-      )}
+  <p>No bookings found...</p>
+) : (
+  customerViewbook.map(booking => (
+    <div key={booking.id}>
+      <p>{booking.materialName || "—"}</p>
+    </div>
+  ))
+)}
     </div>
   );
 };

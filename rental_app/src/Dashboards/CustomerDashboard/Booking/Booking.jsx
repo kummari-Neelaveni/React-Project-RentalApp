@@ -11,10 +11,12 @@ import { onAuthStateChanged } from "firebase/auth";
 
 const Booking = ({ show, handleClose, material, adminId }) => {
   const [bookingDetails, setBookingDetails] = useState({
-    customerName: "",
-    phoneNumber: "",
-    location: "",
-  });
+  customerName: "",
+  phoneNumber: "",
+  location: "",
+  startDate: "",
+  endDate: "",
+});
 
   const [loggedInCustomer, setLoggedInCustomer] = useState(null);
 
@@ -23,9 +25,11 @@ const Booking = ({ show, handleClose, material, adminId }) => {
       if (user) {
         setLoggedInCustomer(user);
         localStorage.setItem("loggedInCustomer", JSON.stringify(user));
+        console.log("User logged in:", user);
       } else {
         setLoggedInCustomer(null);
         localStorage.removeItem("loggedInCustomer");
+        console.log("User logged out.");
       }
     });
 
@@ -41,13 +45,15 @@ const Booking = ({ show, handleClose, material, adminId }) => {
 
   const handleBooking = async () => {
     if (
-      !bookingDetails.customerName ||
-      !bookingDetails.phoneNumber ||
-      !bookingDetails.location
-    ) {
-      alert("Please fill all fields.");
-      return;
-    }
+  !bookingDetails.customerName ||
+  !bookingDetails.phoneNumber ||
+  !bookingDetails.location ||
+  !bookingDetails.startDate ||
+  !bookingDetails.endDate
+) {
+  alert("Please fill all fields.");
+  return;
+}
 
     if (!loggedInCustomer) {
       alert("You must be logged in to book.");
@@ -61,12 +67,14 @@ const Booking = ({ show, handleClose, material, adminId }) => {
 
     const bookingData = {
       ...bookingDetails,
-      materialId: material.id || "", // if you store material.id manually
+      materialId: material.id || "",
       materialName: material.name,
       materialPrice: material.price,
       materialCategory: material.category,
       timestamp: new Date().toISOString(),
     };
+
+    console.log("Booking Data:", bookingData);
 
     try {
       const adminRef = doc(db, "Admins", adminId);
@@ -78,6 +86,8 @@ const Booking = ({ show, handleClose, material, adminId }) => {
       }
 
       let adminData = adminSnap.data();
+      console.log("Admin Data before update:", adminData);
+
       let updatedMaterials = [];
 
       if (adminData.materials && Array.isArray(adminData.materials)) {
@@ -97,22 +107,26 @@ const Booking = ({ show, handleClose, material, adminId }) => {
         });
       }
 
-      // Update materials with new bookings array
+      console.log("Updated materials to save:", updatedMaterials);
+
       await updateDoc(adminRef, {
         materials: updatedMaterials,
       });
 
-      // Also store in customer's record
-      const customerRef = doc(
-        db,
-        "Customers",
-        loggedInCustomer.displayName || loggedInCustomer.uid
-      );
+      const customerKey =
+        loggedInCustomer.displayName || loggedInCustomer.uid;
+
+      const customerRef = doc(db, "Customers", customerKey);
       const customerSnap = await getDoc(customerRef);
 
+      console.log("Customer Ref ID:", customerKey);
+      console.log("Customer Exists:", customerSnap.exists());
+
       if (customerSnap.exists()) {
+        const currentBookings = customerSnap.data().myBookings || [];
+        console.log("Existing Bookings:", currentBookings);
         await updateDoc(customerRef, {
-          myBookings: [...(customerSnap.data().myBookings || []), bookingData],
+          myBookings: [...currentBookings, bookingData],
         });
       } else {
         await setDoc(customerRef, {
@@ -120,6 +134,7 @@ const Booking = ({ show, handleClose, material, adminId }) => {
         });
       }
 
+      console.log("Booking successful");
       alert("Booking confirmed!");
       handleClose();
     } catch (error) {
@@ -175,6 +190,29 @@ const Booking = ({ show, handleClose, material, adminId }) => {
               required
             />
           </Form.Group>
+
+          <Form.Group controlId="startDate">
+  <Form.Label>From Date & Time</Form.Label>
+  <Form.Control
+    type="datetime-local"
+    name="startDate"
+    value={bookingDetails.startDate}
+    onChange={handleChange}
+    required
+  />
+</Form.Group>
+
+<Form.Group controlId="endDate">
+  <Form.Label>To Date & Time</Form.Label>
+  <Form.Control
+    type="datetime-local"
+    name="endDate"
+    value={bookingDetails.endDate}
+    onChange={handleChange}
+    required
+  />
+</Form.Group>
+
         </Form>
       </Modal.Body>
       <Modal.Footer>
@@ -186,6 +224,7 @@ const Booking = ({ show, handleClose, material, adminId }) => {
 };
 
 export default Booking;
+
 
 
 
