@@ -1,86 +1,100 @@
-/* Background and container */
+/* Container */
 .admin-container {
-  max-width: 1000px;
-  margin: 40px auto;
-  padding: 20px 30px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #f0f4ff, #d9e6ff);
-  border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  color: #333;
-
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  padding: 40px 5%;
+  background-color: #f0f4f8;
+  min-height: fit-content;
+  box-sizing: border-box;
 }
 
-/* Individual admin card */
+/* Card */
 .admin-card {
   background-color: #ffffff;
-  border-radius: 12px;
-  padding: 25px 30px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.07);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  cursor: default;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 2px solid #0b2545; /* navy border */
 }
 
 .admin-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-6px);
+  box-shadow: 0 8px 24px rgba(11, 37, 69, 0.3);
+  border-color: #f5c518; /* bright yellow on hover border */
 }
 
-/* Admin name */
-.admin-info h3 {
-  margin-top: 0;
-  font-size: 1.6rem;
-  color: #1e40af; /* nice blue */
+/* Admin Name */
+.admin-card h3 {
+  margin: 0 0 8px;
+  font-size: 1.3rem;
+  color: #0b2545; /* navy blue */
   font-weight: 700;
 }
 
-/* Email text */
-.admin-info p {
-  font-size: 1rem;
-  margin: 8px 0 20px;
-  color: #555;
-  font-weight: 500;
-}
-
-/* Materials section */
-.materials-section {
-  background-color: #f9fbff;
-  padding: 15px 20px;
-  border-radius: 10px;
-  border: 1px solid #d1d9ff;
+/* Paragraphs */
+.admin-card p {
+  margin: 6px 0;
+  color: #333;
   font-size: 0.95rem;
+  line-height: 1.4;
 }
 
+/* Materials Section */
+.materials-section {
+  margin-top: 16px;
+  background-color: #fff8d6; /* soft pale yellow background */
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid #f5c518; /* bright yellow border */
+}
 
-  .materials-section ul {
-  padding-left: 0;       /* Remove left padding */
-  list-style-type: none; /* Remove bullets */
-  margin: 8px 0 0;
-  color: #374151;
+/* Each material info */
+.material-info {
+  background-color: #f5c518; /* bright yellow background */
+  color: #0b2545; /* navy text */
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: 10px;
   font-weight: 600;
-}
- 
-
-.materials-section li {
-  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(11, 37, 69, 0.15);
 }
 
-/* Message when no materials */
-.materials-section p {
-  font-style: italic;
-  color: #888;
-  margin: 0;
+.material-info p {
+  margin: 4px 0;
+  font-size: 0.9rem;
 }
 
-/* Header */
-.admin-container > h2 {
+/* Button */
+button {
+  margin-top: 18px;
+  width: 100%;
+  padding: 10px 0;
+  background-color: #0b2545; /* navy blue */
+  color: #f5c518; /* bright yellow */
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: #f5c518; /* yellow background */
+  color: #0b2545; /* navy text */
+  box-shadow: 0 4px 12px rgba(245, 197, 24, 0.6);
+}
+
+/* Loading and no-data */
+.loading,
+.no-data {
   text-align: center;
-  font-size: 2.4rem;
-  color: #0f172a;
-  margin-bottom: 30px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
+  font-size: 1.1rem;
+  color: #0b2545; /* navy */
+  padding: 60px 20px;
 }
+
+
+

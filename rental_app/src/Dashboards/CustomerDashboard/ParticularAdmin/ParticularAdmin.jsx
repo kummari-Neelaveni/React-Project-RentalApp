@@ -60,10 +60,10 @@ const ParticularAdmin = () => {
       {adminData.materials && adminData.materials.length > 0 ? (
         adminData.materials.map((material, index) => (
           <div key={index} style={{ border: '1px solid gray', padding: '10px', marginBottom: '10px' }}>
-            <p><strong>Name:</strong> {material.name}</p>
+            <p><strong> material Name:</strong> {material.name}</p>
             <p><strong>Business:</strong> {material.BusinessName}</p>
             <p><strong>Category:</strong> {material.category}</p>
-            <p><strong>Price:</strong> ₹{material.price}</p>
+            <p><strong>Price per day:</strong> ₹{material.price}</p>
             <img src={material.imageurl} alt={material.name} width="100" />
             <br />
             <button onClick={() => handleBookNow(material)}>Book Now</button>

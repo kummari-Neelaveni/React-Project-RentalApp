@@ -1,0 +1,68 @@
+/* Booking.css */
+
+.modal-content {
+  background-color: #ffffff; /* white background */
+  color: #0a1931; /* navy blue text */
+  border-radius: 12px;
+  border: 2px solid #ffc300; /* yellow border */
+}
+
+.modal-header,
+.modal-footer {
+  background-color: #ffffff;
+  border: none;
+}
+
+.modal-title {
+  color: #0a1931;
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.form-label {
+  color: #0a1931;
+  font-weight: 500;
+}
+
+.form-control {
+  background-color: #f9f9f9;
+  color: #000;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #ffc300;
+  box-shadow: 0 0 0 2px rgba(255, 195, 0, 0.25);
+}
+
+button.btn-primary {
+  background-color: #ffc300;
+  color: #0a1931;
+  font-weight: bold;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button.btn-primary:hover {
+  background-color: #ffdb4d;
+}
+
+button.btn-secondary {
+  background-color: #0a1931;
+  color: #ffffff;
+  font-weight: 500;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+}
+
+button.btn-secondary:hover {
+  background-color: #132043;
+}
+

@@ -8,6 +8,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
+import './Booking.css'
 
 const Booking = ({ show, handleClose, material, adminId }) => {
   const [bookingDetails, setBookingDetails] = useState({
@@ -15,10 +16,12 @@ const Booking = ({ show, handleClose, material, adminId }) => {
   phoneNumber: "",
   location: "",
   startDate: "",
-  endDate: "",
+  endDate: ""
 });
 
   const [loggedInCustomer, setLoggedInCustomer] = useState(null);
+  const [rentalDays, setRentalDays] = useState(0);
+  const [calculatedPrice, setCalculatedPrice] = useState(0);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(authentication, (user) => {
@@ -35,6 +38,39 @@ const Booking = ({ show, handleClose, material, adminId }) => {
 
     return () => unsubscribe();
   }, []);
+  //// Calculate rental days and total price when dates or price change
+  useEffect(()=>{
+    const {startDate,endDate}=bookingDetails;
+    if (!startDate|| !endDate){
+      console.log("Start date or end date missing");
+      setRentalDays(0)
+      setCalculatedPrice(0);
+      return;
+    }
+    if(!material?.price){
+      console.log("material price is missing");
+      setRentalDays(0);
+      setCalculatedPrice(0);
+      return;
+
+    }
+      const start=new Date(startDate)
+      const end = new Date(endDate);
+     
+    if (end <= start) {
+    console.log("End date must be after start date");
+    setRentalDays(0);
+    setCalculatedPrice(0);
+    return;
+  }
+  const diffMs = end - start;
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  const daysRoundedUp = Math.ceil(diffDays);
+  setRentalDays(daysRoundedUp);
+  setCalculatedPrice(daysRoundedUp * material.price);
+   console.log("Rental Duration (days):", daysRoundedUp);
+  console.log("Total Price:", daysRoundedUp * material.price);
+  },[bookingDetails.startDate, bookingDetails.endDate, material?.price])
 
   const handleChange = (e) => {
     setBookingDetails((prev) => ({
@@ -151,8 +187,8 @@ const Booking = ({ show, handleClose, material, adminId }) => {
       <Modal.Body>
         {material && (
           <>
-            <p><strong>Material:</strong> {material.name}</p>
-            <p><strong>Price:</strong> ₹{material.price}</p>
+            <p><strong>Material Name:</strong> {material.name}</p>
+            <p><strong>Price perday:</strong> ₹{material.price}</p>
             <p><strong>Category:</strong> {material.category}</p>
           </>
         )}
@@ -212,8 +248,25 @@ const Booking = ({ show, handleClose, material, adminId }) => {
     required
   />
 </Form.Group>
+<Form.Group>
+  <Form.Label>Rental Duration</Form.Label>
+  <Form.Control
+    type="text"
+    value={`${rentalDays} day(s)`}
+    disabled
+  />
+</Form.Group>
 
-        </Form>
+<Form.Group>
+  <Form.Label>Total Price</Form.Label>
+  <Form.Control
+    type="text"
+    value={`₹${calculatedPrice}`}
+    disabled
+  />
+</Form.Group>
+
+       </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>Cancel</Button>

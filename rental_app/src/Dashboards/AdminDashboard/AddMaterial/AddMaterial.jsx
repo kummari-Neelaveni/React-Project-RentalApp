@@ -10,11 +10,11 @@ const AddMaterial = () => {
 
   const [addMaterial, setAddMaterial] = useState({
     BusinessName: "",
-    name: "",
+    name: "", 
     description: "",
     quantity: "",
     size: "",
-    location:"",
+    location: "",
     price: "",
     imageurl: "",
     category: ""
@@ -39,38 +39,46 @@ const AddMaterial = () => {
   const handleMaterial = async (e) => {
     e.preventDefault();
 
-    const { BusinessName, name, description, quantity, size, price, imageurl, category } = addMaterial;
+    const { BusinessName, name, description, quantity, size, location, price, imageurl, category } = addMaterial;
 
-    // Validate all fields are filled
-    if (!BusinessName || !name || !description || !quantity || !size || !price || !imageurl || !category) {
+    if (!BusinessName || !name || !description || !quantity || !size || !location || !price || !imageurl || !category) {
       alert("Please fill all fields");
       return;
     }
 
+    // Add unique material id here
+    const materialWithId = {
+      ...addMaterial,
+      id: Date.now().toString(),
+    };
+
+    console.log("Material with ID to add:", materialWithId);
+
     try {
-      // Reference to the Admin document using displayName from logged in admin info
+      // Reference to Admin document
       const adminDocRef = doc(db, "Admins", loggedinUserFirebase.user.displayName);
 
-      // Add material to the array 'materials' in the document
       await updateDoc(adminDocRef, {
-        materials: arrayUnion(addMaterial)
+        materials: arrayUnion(materialWithId)
       });
 
       alert("Material added successfully!");
 
-      // Reset form and close modal
+      // Reset form & close modal
       setAddMaterial({
         BusinessName: "",
         name: "",
         description: "",
         quantity: "",
         size: "",
-        location:"",
+        location: "",
         price: "",
         imageurl: "",
         category: ""
       });
       setOpenModal(false);
+
+      console.log("Material added to Firestore under Admin:", loggedinUserFirebase.user.displayName);
     } catch (error) {
       console.error("Error adding material:", error);
       alert("Failed to add material. Please try again.");
@@ -151,18 +159,18 @@ const AddMaterial = () => {
             </Form.Group>
 
             <Form.Group className="form-group mb-3 add-material-group">
-  <Form.Label className="form-label add-material-label"><strong>Location</strong></Form.Label>
-  <Form.Control
-    className="form-control add-material-input"
-    type="text"
-    placeholder="e.g., Hyderabad"
-  
-    onChange={(e) => setAddMaterial({ ...addMaterial, location: e.target.value })}
-  />
-</Form.Group>
+              <Form.Label className="form-label add-material-label"><strong>Location</strong></Form.Label>
+              <Form.Control
+                className="form-control add-material-input"
+                type="text"
+                placeholder="e.g., Hyderabad"
+                value={addMaterial.location}
+                onChange={(e) => setAddMaterial({ ...addMaterial, location: e.target.value })}
+              />
+            </Form.Group>
 
             <Form.Group className="form-group mb-3 add-material-group">
-              <Form.Label className="form-label add-material-label"><strong>Price (₹)</strong></Form.Label>
+              <Form.Label className="form-label add-material-label"><strong>Price per day (₹)</strong></Form.Label>
               <Form.Control
                 className="form-control add-material-input"
                 type="number"
@@ -214,6 +222,7 @@ const AddMaterial = () => {
 };
 
 export default AddMaterial;
+
 
 
 
