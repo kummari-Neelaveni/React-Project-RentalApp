@@ -1,119 +1,108 @@
-import React, { useState, useEffect } from "react";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { db } from "../../../ConfigFirebase/config";
-import { Card, Container, Row, Col, Spinner, Alert, Button } from "react-bootstrap";
+import { collection, getDocs } from "firebase/firestore";
 
-const ViewBookings = ({ adminId, materialId }) => {
+const ViewBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const fetchMaterialBookings = async () => {
-    try {
-      const adminRef = doc(db, "Admins", adminId);
-      const adminSnap = await getDoc(adminRef);
-
-      if (adminSnap.exists()) {
-        const data = adminSnap.data();
-        const material = data.materials ? data.materials[materialId] : null;
-        if (material && material.bookings) {
-          setBookings(material.bookings);
-        } else {
-          setBookings([]);
-        }
-      } else {
-        setBookings([]);
-      }
-    } catch (error) {
-      console.error("Error fetching bookings:", error);
-      setBookings([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchMaterialBookings();
-  }, [adminId, materialId]);
+    const fetchAllBookings = async () => {
+      try {
+        const customersSnap = await getDocs(collection(db, "Customers"));
 
-  const handleCancelBooking = async (indexToRemove) => {
-    try {
-      const adminRef = doc(db, "Admins", adminId);
-      const adminSnap = await getDoc(adminRef);
-
-      if (adminSnap.exists()) {
-        const adminData = adminSnap.data();
-        const updatedMaterials = [...adminData.materials];
-
-        if (
-          updatedMaterials[materialId] &&
-          updatedMaterials[materialId].bookings
-        ) {
-          updatedMaterials[materialId].bookings = updatedMaterials[materialId].bookings.filter(
-            (_, index) => index !== indexToRemove
-          );
-
-          await updateDoc(adminRef, {
-            materials: updatedMaterials
-          });
-
-          setBookings(updatedMaterials[materialId].bookings);
-          alert("Booking cancelled successfully!");
+        if (customersSnap.empty) {
+          setBookings([]);
+          setLoading(false);
+          return;
         }
+
+        let allBookings = [];
+
+        customersSnap.forEach((doc) => {
+          const data = doc.data();
+
+          // Check if myBookings exists and is an array
+          if (Array.isArray(data.myBookings)) {
+            // Append all bookings of this customer to the allBookings array
+            const customerBookings = data.myBookings.map((booking) => ({
+              ...booking,
+              customerId: doc.id,
+              customerName: booking.customerName || data.name || "Unknown",
+            }));
+            allBookings = allBookings.concat(customerBookings);
+          }
+        });
+
+        setBookings(allBookings);
+      } catch (err) {
+        console.error("Error fetching bookings:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error cancelling booking:", error);
-      alert("Failed to cancel booking.");
-    }
-  };
+    };
 
-  if (loading) {
-    return (
-      <div className="text-center mt-4">
-        <Spinner animation="border" variant="primary" />
-      </div>
-    );
-  }
+    fetchAllBookings();
+  }, []);
 
-  if (!bookings.length) {
-    return (
-      <Container className="mt-4">
-        <Alert variant="info" className="text-center">
-          No bookings for this material.
-        </Alert>
-      </Container>
-    );
-  }
+  if (loading) return <div>Loading bookings...</div>;
+  if (error) return <div style={{ color: "red" }}>Error: {error}</div>;
+  if (bookings.length === 0)
+    return <div>No bookings found for any customer.</div>;
 
   return (
-    <Container className="mt-4">
-      <h2>Bookings for Material: {materialId}</h2>
-      <Row>
-        {bookings.map((booking, index) => (
-          <Col key={index} md={4} className="mb-4">
-            <Card>
-              <Card.Body>
-                <Card.Title>{booking.customerName}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">
-                  Phone: {booking.phoneNumber}
-                </Card.Subtitle>
-                <Card.Text>
-                  <strong>Location:</strong> {booking.location} <br />
-                  <small>Booked At: {booking.bookedAt ? new Date(booking.bookedAt).toLocaleString() : "N/A"}</small>
-                </Card.Text>
-                <Button
-                  variant="danger"
-                  onClick={() => handleCancelBooking(index)}
-                >
-                  Cancel Booking
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <div style={{ padding: "20px" }}>
+      <h2>All Customer Bookings</h2>
+      <table border="1" cellPadding="10" style={{ width: "100%", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th>Customer Name</th>
+            <th>Material Name</th>
+            <th>Location</th>
+            <th>Phone</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Material Price</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bookings.map((b, i) => (
+            <tr key={`${b.customerId}_${i}`}>
+              <td>{b.customerName}</td>
+              <td>{b.materialName}</td>
+              <td>{b.location}</td>
+              <td>{b.phoneNumber || "N/A"}</td>
+              <td>{new Date(b.startDate).toLocaleString()}</td>
+              <td>{b.endDate ? new Date(b.endDate).toLocaleString() : "Ongoing"}</td>
+              <td>{b.materialPrice || "N/A"}</td>
+              <td>{b.status || "Active"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 
 export default ViewBookings;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
