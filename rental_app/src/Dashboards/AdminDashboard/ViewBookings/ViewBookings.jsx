@@ -25,11 +25,11 @@ const ViewBookings = () => {
 
           // Check if myBookings exists and is an array
           if (Array.isArray(data.myBookings)) {
-            // Append all bookings of this customer to the allBookings array
             const customerBookings = data.myBookings.map((booking) => ({
               ...booking,
               customerId: doc.id,
               customerName: booking.customerName || data.name || "Unknown",
+              quantity: booking.quantity || "N/A", // ✅ show requested quantity
             }));
             allBookings = allBookings.concat(customerBookings);
           }
@@ -55,7 +55,11 @@ const ViewBookings = () => {
   return (
     <div style={{ padding: "20px" }}>
       <h2>All Customer Bookings</h2>
-      <table border="1" cellPadding="10" style={{ width: "100%", borderCollapse: "collapse" }}>
+      <table
+        border="1"
+        cellPadding="10"
+        style={{ width: "100%", borderCollapse: "collapse" }}
+      >
         <thead>
           <tr>
             <th>Customer Name</th>
@@ -66,6 +70,7 @@ const ViewBookings = () => {
             <th>End Date</th>
             <th>Material Price</th>
             <th>Status</th>
+            <th>Requested Quantity</th> {/* ✅ Added this */}
           </tr>
         </thead>
         <tbody>
@@ -76,9 +81,14 @@ const ViewBookings = () => {
               <td>{b.location}</td>
               <td>{b.phoneNumber || "N/A"}</td>
               <td>{new Date(b.startDate).toLocaleString()}</td>
-              <td>{b.endDate ? new Date(b.endDate).toLocaleString() : "Ongoing"}</td>
+              <td>
+                {b.endDate
+                  ? new Date(b.endDate).toLocaleString()
+                  : "Ongoing"}
+              </td>
               <td>{b.materialPrice || "N/A"}</td>
               <td>{b.status || "Active"}</td>
+              <td>{b.quantity}</td> {/* ✅ Display quantity here */}
             </tr>
           ))}
         </tbody>
@@ -88,6 +98,7 @@ const ViewBookings = () => {
 };
 
 export default ViewBookings;
+
 
 
 
